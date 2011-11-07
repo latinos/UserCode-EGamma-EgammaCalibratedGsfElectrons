@@ -1,0 +1,28 @@
+
+import FWCore.ParameterSet.Config as cms
+
+
+#==============================================================================
+# corrected gsf electrons
+#==============================================================================
+
+calibratedGsfElectrons = cms.EDProducer("CalibratedGsfElectronProducer",
+
+    # input collections
+    inputGsfElectronsTag = cms.InputTag("gsfElectrons"),
+
+    # data or MC corrections
+    # if isMC is false, data corrections are applied
+    isMC = cms.bool(False),
+        
+    # input datasets
+    # Prompt means 'May10+Promptv4+Aug05+Promptv6
+    # Rereco means 'Jul05+Aug05+Oct03
+    # Summer11 means summer11 MC..
+    # Correction factors for 2011B period not yet implemented
+    #inputDataset = cms.string("ReReco"),
+    inputDataset = cms.string("Prompt"),
+    
+)
+
+
