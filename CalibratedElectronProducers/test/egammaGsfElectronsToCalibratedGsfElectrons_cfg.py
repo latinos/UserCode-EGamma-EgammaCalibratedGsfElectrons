@@ -42,23 +42,25 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring
     (
-    'file:/data_CMS/cms/charlot/Run2011/AllCandidatesEPS11/HZZCandidates.root'
+#    'file:/data_CMS/cms/charlot/Run2011/AllCandidatesEPS11/HZZCandidates.root'
 #    '/store/data/Summer11/DYToEE_M-800_TuneZ2_7TeV-pythia6-tauola/AODSIM/PU_S3_START42_V11-v2/0000/0ABF7CD0-8888-E011-8561-1CC1DE051038.root'    
-    )
+      '/store/user/charlot/8EAAB35F-00EF-E011-8408-003048678B76.root' 
+    ),
+    eventsToProcess = cms.untracked.VEventRange('173243:16706390')   
 )
 
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
 
 process.out = cms.OutputModule("PoolOutputModule",
     outputCommands = cms.untracked.vstring('keep *'),
-    fileName = cms.untracked.string('HZZCandidates_newEscale.root')
+    fileName = cms.untracked.string('CandidateZ_newEscale.root')
 #    fileName = cms.untracked.string('testMC.root')
 )
 
 process.load("EgammaCalibratedGsfElectrons.CalibratedElectronProducers.calibratedGsfElectrons_cfi")
 
 # dataset to correct
-process.calibratedGsfElectrons.inputDataset = cms.string("ReReco")
+process.calibratedGsfElectrons.inputDataset = cms.string("Jan16ReReco")
 #process.calibratedGsfElectrons.inputDataset = cms.string("Summer11")
 process.calibratedGsfElectrons.isMC = cms.bool(False)
 

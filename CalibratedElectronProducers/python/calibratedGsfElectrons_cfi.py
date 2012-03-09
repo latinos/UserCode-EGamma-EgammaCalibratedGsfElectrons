@@ -16,10 +16,10 @@ calibratedGsfElectrons = cms.EDProducer("CalibratedGsfElectronProducer",
     isMC = cms.bool(False),
         
     # input datasets
-    # Prompt means 'May10+Promptv4+Aug05+Promptv6
-    # Rereco means 'Jul05+Aug05+Oct03
+    # Prompt means May10+Promptv4+Aug05+Promptv6 for 2011
+    # ReReco means Jul05+Aug05+Oct03 for 2011
+    # Jan16ReReco means Jan16 for 2011
     # Summer11 means summer11 MC..
-    # Correction factors for 2011B period not yet implemented
     #inputDataset = cms.string("ReReco"),
     inputDataset = cms.string("Prompt"),
     
