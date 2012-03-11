@@ -14,14 +14,15 @@ class ElectronEnergyCalibrator
 {
  public:
 
-  ElectronEnergyCalibrator(std::string dataset, bool isMC) : dataset_(dataset), isMC_(isMC){}
+  ElectronEnergyCalibrator(std::string dataset, bool isMC, bool updateEnergyError) : dataset_(dataset),
+   isMC_(isMC), updateEnergyError_(updateEnergyError) {}
 
   void correct(reco::GsfElectron &, const edm::Event&, const edm::EventSetup&);
 
  private:
 
   void computeNewEnergy( const reco::GsfElectron &, float r9, int run) ;
-  void computeEpCombination( const reco::GsfElectron & electron ) ;
+  void computeEpCombination( reco::GsfElectron & electron ) ;
 
   float newEnergy_ ;
   float newEnergyError_ ;
@@ -35,6 +36,7 @@ class ElectronEnergyCalibrator
   
   std::string dataset_;
   bool isMC_;
+  bool updateEnergyError_;
 
 };
 

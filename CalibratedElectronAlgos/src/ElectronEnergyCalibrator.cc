@@ -71,12 +71,16 @@ void ElectronEnergyCalibrator::correct
   electron.correctEcalEnergy(newEnergy_,newEnergyError_) ;
   
   // apply E-p combination
+  //std::cout << "[ElectronEnergCorrector] old comb momentum " << electron.p4(reco::GsfElectron::P4_COMBINATION).t() << std::endl;
+  //std::cout << "[ElectronEnergCorrector] old comb momentum error " << electron.p4Error(reco::GsfElectron::P4_COMBINATION) << std::endl;
   computeEpCombination(electron) ;
   //electron.correctMomentum(newMomentum_,errorTrackMomentum_,finalMomentumError_);
   //std::cout << "[ElectronEnergCorrector] old comb momentum " << electron.p4().t() << std::endl;
-  electron.setP4(newMomentum_) ;
-  //std::cout << "[ElectronEnergCorrector] new comb momentum " << electron.p4().t() << std::endl;
-  //electron.setFinalMomentumError() ;
+  //electron.setP4(newMomentum_) ;
+  //electron.setP4Error(finalMomentumError_); // this method does not exist
+  electron.correctMomentum(newMomentum_,errorTrackMomentum_,finalMomentumError_);
+  //std::cout << "[ElectronEnergCorrector] new comb momentum " << electron.p4(reco::GsfElectron::P4_COMBINATION).t() << std::endl;
+  //std::cout << "[ElectronEnergCorrector] new comb momentum error " << electron.p4Error(reco::GsfElectron::P4_COMBINATION) << std::endl;
  }
 
 void ElectronEnergyCalibrator::computeNewEnergy
@@ -307,33 +311,51 @@ void ElectronEnergyCalibrator::computeNewEnergy
 	if (run>=178424 && run<=180252) corr = 0.0047;
       } 
     }
-  } else { // MC corrections
-    // new values from https://indico.cern.ch/conferenceDisplay.py?confId=146386
-    if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9<0.94) dsigMC = 0.01;
-    if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9>=0.94) dsigMC = 0.0099;
-    if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 && r9<0.94) dsigMC = 0.0217;
-    if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 && r9>=0.94) dsigMC = 0.0157;
-    if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9<0.94) dsigMC = 0.0326;
-    if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9>=0.94) dsigMC = 0.0330;
-    if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9<0.94) dsigMC = 0.0331;
-    if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9>=0.94) dsigMC = 0.0378;
-    
-     CLHEP::RandGaussQ gaussDistribution(rng->getEngine(), 1.,dsigMC);
-     corrMC = gaussDistribution.fire();
-  }
+  } 
+    // MC smearing dsig is needed also for data for theenergy error, take it from the last MC values consistant
+    // with the data choice
+//  else  { // MC corrections
+    if (dataset_=="Summer11"||dataset_=="ReReco") { // values from https://indico.cern.ch/conferenceDisplay.py?confId=146386
+      if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9<0.94) dsigMC = 0.01;
+      if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9>=0.94) dsigMC = 0.0099;
+      if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 && r9<0.94) dsigMC = 0.0217;
+      if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 && r9>=0.94) dsigMC = 0.0157;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9<0.94) dsigMC = 0.0326;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9>=0.94) dsigMC = 0.0330;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9<0.94) dsigMC = 0.0331;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9>=0.94) dsigMC = 0.0378;
+    } else if (dataset_=="Fall11"||dataset_=="Jan16ReReco") { // values from https://hypernews.cern.ch/HyperNews/CMS/get/higgs2g/634.html, consistant with Jan16ReReco corrections
+      if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9<0.94) dsigMC = 0.0096;
+      if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9>=0.94) dsigMC = 0.0074;
+      if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 && r9<0.94) dsigMC = 0.0196;
+      if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 && r9>=0.94) dsigMC = 0.0141;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9<0.94) dsigMC = 0.0279;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9>=0.94) dsigMC = 0.0268;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9<0.94) dsigMC = 0.0301;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9>=0.94) dsigMC = 0.0293;   
+    }
+//  }
   
   // now correct the energy
   // correction for data
   if (!isMC_) newEnergy_ = scEnergy/(1+corr);
   // smearing for MC
-  if (isMC_) newEnergy_ = scEnergy*corrMC;  
+  if (isMC_) {
+    CLHEP::RandGaussQ gaussDistribution(rng->getEngine(), 1.,dsigMC);
+    corrMC = gaussDistribution.fire();
+    newEnergy_ = scEnergy*corrMC;  
+  }  
+  // correct energy error for MC and for data as error is obtained from (ideal) MC parametrisation
+  if (updateEnergyError_)
+   newEnergyError_ = sqrt(newEnergyError_*newEnergyError_ + dsigMC*dsigMC*newEnergy_*newEnergy_) ;
   std::cout << "[ElectronEnergyCalibrator] SC corrected energy " << electron.superCluster()->energy() << " new corrected energy " << newEnergy_ << std::endl;
+  std::cout << "[ElectronEnergyCalibrator] SC corrected energy error " << electron.ecalEnergyError() << " new corrected energy error " << newEnergyError_ << std::endl;
 
  }
 
 
 void ElectronEnergyCalibrator::computeEpCombination
- ( const reco::GsfElectron & electron )
+ ( reco::GsfElectron & electron )
  {
 
   float scEnergy = electron.ecalEnergy() ;
@@ -423,7 +445,7 @@ void ElectronEnergyCalibrator::computeEpCombination
      oldMomentum.y()*finalMomentum/oldMomentum.t(),
      oldMomentum.z()*finalMomentum/oldMomentum.t(),
      finalMomentum ) ;
+  finalMomentumError_ =  finalMomentumError;  
   //std::cout << "[ElectronEnergCorrector] old comb momentum " << oldMomentum.t() << " new comb momentum " << newMomentum_.t() << std::endl;
-
 
  }
