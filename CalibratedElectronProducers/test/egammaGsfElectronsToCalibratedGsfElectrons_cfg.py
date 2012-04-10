@@ -62,7 +62,10 @@ process.load("EgammaCalibratedGsfElectrons.CalibratedElectronProducers.calibrate
 # dataset to correct
 process.calibratedGsfElectrons.inputDataset = cms.string("Jan16ReReco")
 #process.calibratedGsfElectrons.inputDataset = cms.string("Summer11")
+#process.calibratedGsfElectrons.inputDataset = cms.string("Fall11")
 process.calibratedGsfElectrons.isMC = cms.bool(False)
+process.calibratedGsfElectrons.updateEnergyError = cms.bool(True)
+
 
 process.p = cms.Path(process.calibratedGsfElectrons)
 
