@@ -46,7 +46,9 @@ CalibratedGsfElectronProducer::CalibratedGsfElectronProducer( const edm::Paramet
   inputGsfElectrons = cfg.getParameter<edm::InputTag>("inputGsfElectronsTag");
   dataset = cfg.getParameter<std::string>("inputDataset");
   isMC = cfg.getParameter<bool>("isMC");
+  isAOD = cfg.getParameter<bool>("isAOD");
   updateEnergyError = cfg.getParameter<bool>("updateEnergyError");
+  debug = cfg.getParameter<bool>("debug");
   
   //basic checks
   if (isMC&&(dataset!="Summer11"&&dataset!="Fall11"))
@@ -78,7 +80,7 @@ void CalibratedGsfElectronProducer::produce( edm::Event & event, const edm::Even
       electrons->push_back(*electron->clone()) ;
    }
   
-  ElectronEnergyCalibrator theEnCorrector(dataset, isMC, updateEnergyError);
+  ElectronEnergyCalibrator theEnCorrector(dataset, isAOD, isMC, updateEnergyError, debug);
 
   for
    ( ele = electrons->begin() ;

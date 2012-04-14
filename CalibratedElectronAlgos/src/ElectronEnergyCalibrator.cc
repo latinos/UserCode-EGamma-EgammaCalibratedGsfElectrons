@@ -31,8 +31,9 @@ void ElectronEnergyCalibrator::correct
   bool validEcalRecHits=true;
   Handle<EcalRecHitCollection> barrelHitHandle;
   EcalRecHitCollection barrelRecHits;
-  InputTag ebhits("ecalRecHit","EcalRecHitsEB");
-  event.getByLabel(ebhits, barrelHitHandle);
+  //InputTag ebhits("ecalRecHit","EcalRecHitsEB");
+  if (!isAOD_) event.getByLabel("EcalRecHitsEB", barrelHitHandle);
+  else event.getByLabel("reducedEcalRecHitsEB", barrelHitHandle);
   if (!barrelHitHandle.isValid()) {
 //    edm::LogError("PhotonProducer") << "Error! Can't get the product "<<barrelEcalHits_.label();
     validEcalRecHits=false; 
@@ -40,8 +41,9 @@ void ElectronEnergyCalibrator::correct
   if (  validEcalRecHits)  barrelRecHits = *(barrelHitHandle.product());
  
   Handle<EcalRecHitCollection> endcapHitHandle;
-  InputTag eehits("ecalRecHit","EcalRecHitsEE");
-  event.getByLabel(eehits, endcapHitHandle);
+  //InputTag eehits("ecalRecHit","EcalRecHitsEE");
+  if (!isAOD_) event.getByLabel("EcalRecHitsEE", endcapHitHandle);
+  else event.getByLabel("reducedEcalRecHitsEE", endcapHitHandle);
   EcalRecHitCollection endcapRecHits;
   if (!endcapHitHandle.isValid()) {
 //    edm::LogError("PhotonProducer") << "Error! Can't get the product "<<endcapEcalHits_.label();
@@ -71,16 +73,16 @@ void ElectronEnergyCalibrator::correct
   electron.correctEcalEnergy(newEnergy_,newEnergyError_) ;
   
   // apply E-p combination
-  //std::cout << "[ElectronEnergCorrector] old comb momentum " << electron.p4(reco::GsfElectron::P4_COMBINATION).t() << std::endl;
-  //std::cout << "[ElectronEnergCorrector] old comb momentum error " << electron.p4Error(reco::GsfElectron::P4_COMBINATION) << std::endl;
+  if (debug_) std::cout << "[ElectronEnergCorrector] old comb momentum " << electron.p4(reco::GsfElectron::P4_COMBINATION).t() << std::endl;
+  if (debug_) std::cout << "[ElectronEnergCorrector] old comb momentum error " << electron.p4Error(reco::GsfElectron::P4_COMBINATION) << std::endl;
   computeEpCombination(electron) ;
   //electron.correctMomentum(newMomentum_,errorTrackMomentum_,finalMomentumError_);
   //std::cout << "[ElectronEnergCorrector] old comb momentum " << electron.p4().t() << std::endl;
   //electron.setP4(newMomentum_) ;
   //electron.setP4Error(finalMomentumError_); // this method does not exist
   electron.correctMomentum(newMomentum_,errorTrackMomentum_,finalMomentumError_);
-  //std::cout << "[ElectronEnergCorrector] new comb momentum " << electron.p4(reco::GsfElectron::P4_COMBINATION).t() << std::endl;
-  //std::cout << "[ElectronEnergCorrector] new comb momentum error " << electron.p4Error(reco::GsfElectron::P4_COMBINATION) << std::endl;
+  if (debug_) std::cout << "[ElectronEnergCorrector] new comb momentum " << electron.p4(reco::GsfElectron::P4_COMBINATION).t() << std::endl;
+  if (debug_) std::cout << "[ElectronEnergCorrector] new comb momentum error " << electron.p4Error(reco::GsfElectron::P4_COMBINATION) << std::endl;
  }
 
 void ElectronEnergyCalibrator::computeNewEnergy
@@ -348,8 +350,8 @@ void ElectronEnergyCalibrator::computeNewEnergy
   // correct energy error for MC and for data as error is obtained from (ideal) MC parametrisation
   if (updateEnergyError_)
    newEnergyError_ = sqrt(newEnergyError_*newEnergyError_ + dsigMC*dsigMC*newEnergy_*newEnergy_) ;
-  //std::cout << "[ElectronEnergyCalibrator] SC corrected energy " << electron.superCluster()->energy() << " new corrected energy " << newEnergy_ << std::endl;
-  //std::cout << "[ElectronEnergyCalibrator] SC corrected energy error " << electron.ecalEnergyError() << " new corrected energy error " << newEnergyError_ << std::endl;
+  if (debug_) std::cout << "[ElectronEnergyCalibrator] SC corrected energy " << electron.superCluster()->energy() << " new corrected energy " << newEnergy_ << std::endl;
+  if (debug_) std::cout << "[ElectronEnergyCalibrator] SC corrected energy error " << electron.ecalEnergyError() << " new corrected energy error " << newEnergyError_ << std::endl;
 
  }
 
@@ -446,6 +448,6 @@ void ElectronEnergyCalibrator::computeEpCombination
      oldMomentum.z()*finalMomentum/oldMomentum.t(),
      finalMomentum ) ;
   finalMomentumError_ =  finalMomentumError;  
-  //std::cout << "[ElectronEnergCorrector] old comb momentum " << oldMomentum.t() << " new comb momentum " << newMomentum_.t() << std::endl;
+  if (debug_) std::cout << "[ElectronEnergCorrector] old comb momentum " << oldMomentum.t() << " new comb momentum " << newMomentum_.t() << std::endl;
 
  }

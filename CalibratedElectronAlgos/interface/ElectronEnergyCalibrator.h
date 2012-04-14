@@ -14,8 +14,8 @@ class ElectronEnergyCalibrator
 {
  public:
 
-  ElectronEnergyCalibrator(std::string dataset, bool isMC, bool updateEnergyError) : dataset_(dataset),
-   isMC_(isMC), updateEnergyError_(updateEnergyError) {}
+  ElectronEnergyCalibrator(std::string dataset, bool isAOD, bool isMC, bool updateEnergyError, bool debug) : dataset_(dataset),
+   isAOD_(isAOD), isMC_(isMC), updateEnergyError_(updateEnergyError), debug_(debug) {}
 
   void correct(reco::GsfElectron &, const edm::Event&, const edm::EventSetup&);
 
@@ -35,9 +35,11 @@ class ElectronEnergyCalibrator
   edm::ESHandle<CaloTopology> caloTopo ;
   
   std::string dataset_;
+  bool isAOD_;
   bool isMC_;
   bool updateEnergyError_;
-
+  bool debug_;
+   
 };
 
 #endif

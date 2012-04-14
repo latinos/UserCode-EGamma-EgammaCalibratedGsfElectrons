@@ -22,8 +22,10 @@ class CalibratedGsfElectronProducer: public edm::EDProducer
 
     edm::InputTag inputGsfElectrons ;
     std::string dataset ;
+    bool isAOD ;
     bool isMC ;
     bool updateEnergyError ;
+    bool debug ;
     
  } ;
 
