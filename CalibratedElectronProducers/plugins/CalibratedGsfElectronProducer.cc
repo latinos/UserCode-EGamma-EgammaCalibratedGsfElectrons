@@ -46,11 +46,12 @@ CalibratedGsfElectronProducer::CalibratedGsfElectronProducer( const edm::Paramet
   inputGsfElectrons = cfg.getParameter<edm::InputTag>("inputGsfElectronsTag");
   dataset = cfg.getParameter<std::string>("inputDataset");
   isMC = cfg.getParameter<bool>("isMC");
+  updateEnergyError = cfg.getParameter<bool>("updateEnergyError");
   
   //basic checks
-  if (isMC&&dataset!="Summer11")
+  if (isMC&&(dataset!="Summer11"&&dataset!="Fall11"))
    { throw cms::Exception("CalibratedgsfElectronProducer|ConfigError")<<"Unknown MC dataset" ; }
-  if (!isMC&&(dataset!="Prompt"&&dataset!="ReReco"))
+  if (!isMC&&(dataset!="Prompt"&&dataset!="ReReco"&&dataset!="Jan16ReReco"))
    { throw cms::Exception("CalibratedgsfElectronProducer|ConfigError")<<"Unknown Data dataset" ; }
  }
  
@@ -77,7 +78,7 @@ void CalibratedGsfElectronProducer::produce( edm::Event & event, const edm::Even
       electrons->push_back(*electron->clone()) ;
    }
   
-  ElectronEnergyCalibrator theEnCorrector(dataset, isMC);
+  ElectronEnergyCalibrator theEnCorrector(dataset, isMC, updateEnergyError);
 
   for
    ( ele = electrons->begin() ;
