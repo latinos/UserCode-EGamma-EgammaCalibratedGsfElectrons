@@ -110,6 +110,7 @@ void ElectronEnergyCalibrator::computeNewEnergy
           "in the configuration file or remove the modules that require it.";
    }
   
+  std::cout << "[EnergyCalibrator] before everything " << std::endl;
   // data corrections 
   if (!isMC_) {
     // corrections for prompt
@@ -312,6 +313,34 @@ void ElectronEnergyCalibrator::computeNewEnergy
 	if (run>=177140 && run<=178421) corr = 0.0056;
 	if (run>=178424 && run<=180252) corr = 0.0047;
       } 
+    // corrections for prompt 2012A and 2012B 
+    } else if (dataset_=="Prompt2012") {                     
+      // values from https://hypernews.cern.ch/HyperNews/CMS/get/higgs2g/742.html
+       if (electron.isEB() && fabs(electron.superCluster()->eta())<1 and r9<0.94) {
+        if (run>=190645 && run<=193621) corr = -0.0033; 
+	if (run>=193834 && run<=194479) corr = -0.0024;   
+      } else if (electron.isEB() && fabs(electron.superCluster()->eta())<1 and r9>=0.94) {      
+        if (run>=190645 && run<=193621) corr = +0.0021; 
+	if (run>=193834 && run<=194479) corr = +0.0003;   
+      } else if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 and r9<0.94) {      
+        if (run>=190645 && run<=193621) corr = -0.0122; 
+	if (run>=193834 && run<=194479) corr = -0.0102;   
+      } else if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 and r9>=0.94) {      
+        if (run>=190645 && run<=193621) corr = -0.0003; 
+	if (run>=193834 && run<=194479) corr = +0.0018;   
+      } else if (electron.isEE() && fabs(electron.superCluster()->eta())<2 and r9<0.94) {
+        if (run>=190645 && run<=193621) corr = -0.0043; 
+	if (run>=193834 && run<=194479) corr = -0.0045;   
+      } else if (electron.isEE() && fabs(electron.superCluster()->eta())<2 and r9>=0.94) {      
+        if (run>=190645 && run<=193621) corr = -0.0002; 
+	if (run>=193834 && run<=194479) corr = -0.0004;   
+      } else if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 and r9<0.94) {      
+        if (run>=190645 && run<=193621) corr = +0.0104; 
+	if (run>=193834 && run<=194479) corr = -0.0038;   
+      } else if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 and r9>=0.94) {      
+        if (run>=190645 && run<=193621) corr = +0.022; 
+	if (run>=193834 && run<=194479) corr = +0.0077;   
+      } 
     }
   } 
     // MC smearing dsig is needed also for data for theenergy error, take it from the last MC values consistant
@@ -335,6 +364,15 @@ void ElectronEnergyCalibrator::computeNewEnergy
       if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9>=0.94) dsigMC = 0.0268;
       if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9<0.94) dsigMC = 0.0301;
       if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9>=0.94) dsigMC = 0.0293;   
+    } else if (dataset_=="Summer12"||dataset_=="Prompt2012") { // values from https://twiki.cern.ch/twiki/pub/CMS/EcalEnergyResolutionWithZee/oriented-Hgg-prompt-2012.pdf, consistant with Prompt2012 corrections
+      if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9<0.94) dsigMC = 0.0126;
+      if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9>=0.94) dsigMC = 0.0084;
+      if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 && r9<0.94) dsigMC = 0.0217;
+      if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 && r9>=0.94) dsigMC = 0.0291;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9<0.94) dsigMC = 0.0291;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9>=0.94) dsigMC = 0.0377;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9<0.94) dsigMC = 0.0467;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9>=0.94) dsigMC = 0.0438;   
     }
 //  }
   
