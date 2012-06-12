@@ -34,11 +34,16 @@ void ElectronEnergyCalibrator::correct
   //InputTag ebhits("ecalRecHit","EcalRecHitsEB");
   if (!isAOD_) event.getByLabel("EcalRecHitsEB", barrelHitHandle);
   else event.getByLabel("reducedEcalRecHitsEB", barrelHitHandle);
+/*
   if (!barrelHitHandle.isValid()) {
 //    edm::LogError("PhotonProducer") << "Error! Can't get the product "<<barrelEcalHits_.label();
     validEcalRecHits=false; 
+    if (debug_) std::cout << "[ElectronEnergCorrector] unvalid rechit collection, stopping " << std::endl;    
+    edm::LogError("ElectronEnergCorrector") << "Error! Can't get reducedEcalRecHitsEB" <<std::endl;
   }
   if (  validEcalRecHits)  barrelRecHits = *(barrelHitHandle.product());
+*/
+  barrelRecHits = *(barrelHitHandle.product());
  
   Handle<EcalRecHitCollection> endcapHitHandle;
   //InputTag eehits("ecalRecHit","EcalRecHitsEE");
@@ -67,7 +72,8 @@ void ElectronEnergyCalibrator::correct
     e3x3    =   EcalClusterTools::e3x3(*(electron.superCluster()->seed()), &(endcapRecHits), &(*topology)); 
    }
   float r9 = e3x3/electron.superCluster()->rawEnergy();
-
+  if (debug_) std::cout << "[ElectronEnergCorrector] R9 " << r9 << std::endl;
+  
   // apply ECAL calibration scale and smearing factors depending on period and categories
   computeNewEnergy(electron, r9, event.run()) ;
   electron.correctEcalEnergy(newEnergy_,newEnergyError_) ;
@@ -110,7 +116,6 @@ void ElectronEnergyCalibrator::computeNewEnergy
           "in the configuration file or remove the modules that require it.";
    }
   
-  std::cout << "[EnergyCalibrator] before everything " << std::endl;
   // data corrections 
   if (!isMC_) {
     // corrections for prompt
