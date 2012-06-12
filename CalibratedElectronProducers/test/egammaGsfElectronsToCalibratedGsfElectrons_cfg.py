@@ -44,20 +44,6 @@ process.out = cms.OutputModule("PoolOutputModule",
 
 process.load("EgammaCalibratedGsfElectrons.CalibratedElectronProducers.calibratedGsfElectrons_cfi")
 
-## dataset to correct
-## choose which kind of scale correction/MC smearing should be applied for electrons. Options are:
-#if process.source.fileNames[0].find('Fall11') or process.source.fileNames[0].find('START52'):
-#    #FIXME what should we use for 52 samples?
-#    process.calibratedGsfElectrons.inputDataset = "Fall11"
-#elif process.source.fileNames[0].find('Summer11' ):
-#    process.calibratedGsfElectrons.inputDataset = "Summer11"
-#elif process.source.fileNames[0].find('Jan16ReReco' ):
-#    process.calibratedGsfElectrons.inputDataset = "Jan16ReReco"
-#elif process.source.fileNames[0].find('ReReco' ):
-#    process.calibratedGsfElectrons.inputDataset = "ReReco"
-#elif process.source.fileNames[0].find('Prompt'):
-#    process.calibratedGsfElectrons.inputDataset = "Prompt"
-
 process.calibratedGsfElectrons.inputDataset = cms.string("ReReco2012")
 #process.calibratedGsfElectrons.inputDataset = cms.string("Jan16ReReco")
 #process.calibratedGsfElectrons.inputDataset = cms.string("Prompt")
