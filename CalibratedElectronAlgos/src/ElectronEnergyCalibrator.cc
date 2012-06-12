@@ -28,33 +28,15 @@ void ElectronEnergyCalibrator::correct
  {
 
   // compute r9
-  bool validEcalRecHits=true;
   Handle<EcalRecHitCollection> barrelHitHandle;
-  EcalRecHitCollection barrelRecHits;
-  //InputTag ebhits("ecalRecHit","EcalRecHitsEB");
   if (!isAOD_) event.getByLabel("EcalRecHitsEB", barrelHitHandle);
   else event.getByLabel("reducedEcalRecHitsEB", barrelHitHandle);
-/*
-  if (!barrelHitHandle.isValid()) {
-//    edm::LogError("PhotonProducer") << "Error! Can't get the product "<<barrelEcalHits_.label();
-    validEcalRecHits=false; 
-    if (debug_) std::cout << "[ElectronEnergCorrector] unvalid rechit collection, stopping " << std::endl;    
-    edm::LogError("ElectronEnergCorrector") << "Error! Can't get reducedEcalRecHitsEB" <<std::endl;
-  }
-  if (  validEcalRecHits)  barrelRecHits = *(barrelHitHandle.product());
-*/
-  barrelRecHits = *(barrelHitHandle.product());
+  EcalRecHitCollection barrelRecHits = *(barrelHitHandle.product());
  
   Handle<EcalRecHitCollection> endcapHitHandle;
-  //InputTag eehits("ecalRecHit","EcalRecHitsEE");
   if (!isAOD_) event.getByLabel("EcalRecHitsEE", endcapHitHandle);
   else event.getByLabel("reducedEcalRecHitsEE", endcapHitHandle);
-  EcalRecHitCollection endcapRecHits;
-  if (!endcapHitHandle.isValid()) {
-//    edm::LogError("PhotonProducer") << "Error! Can't get the product "<<endcapEcalHits_.label();
-    validEcalRecHits=false; 
-  }
-  if( validEcalRecHits) endcapRecHits = *(endcapHitHandle.product());
+  EcalRecHitCollection endcapRecHits = *(endcapHitHandle.product());
 
   if (cacheIDTopo!=eventSetup.get<CaloTopologyRecord>().cacheIdentifier()){
     cacheIDTopo=eventSetup.get<CaloTopologyRecord>().cacheIdentifier();
