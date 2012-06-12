@@ -415,7 +415,9 @@ void ElectronEnergyCalibrator::computeNewEnergy
   if (isMC_) {
     CLHEP::RandGaussQ gaussDistribution(rng->getEngine(), 1.,dsigMC);
     corrMC = gaussDistribution.fire();
+    if (debug_) std::cout << "[ElectronEnergyCalibrator] unsmeared energy " << scEnergy << std::endl;
     newEnergy_ = scEnergy*corrMC;  
+    if (debug_) std::cout << "[ElectronEnergyCalibrator] smeared energy " << newEnergy_ << std::endl;
   }  
   // correct energy error for MC and for data as error is obtained from (ideal) MC parametrisation
   if (updateEnergyError_)
