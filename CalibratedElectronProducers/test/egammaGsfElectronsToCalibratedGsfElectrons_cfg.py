@@ -52,7 +52,7 @@ process.calibratedGsfElectrons.inputDataset = cms.string("Summer12")
 process.calibratedGsfElectrons.isMC = cms.bool(True)
 process.calibratedGsfElectrons.isAOD = cms.bool(True)
 process.calibratedGsfElectrons.updateEnergyError = cms.bool(True)
-process.calibratedGsfElectrons.debug = cms.bool(True)
+#process.calibratedGsfElectrons.debug = cms.bool(True)
 
 
 process.p = cms.Path(process.calibratedGsfElectrons)
