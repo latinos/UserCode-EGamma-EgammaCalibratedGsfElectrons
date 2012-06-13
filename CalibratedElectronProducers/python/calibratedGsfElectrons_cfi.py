@@ -22,7 +22,7 @@ calibratedGsfElectrons = cms.EDProducer("CalibratedGsfElectronProducer",
     debug = cms.bool(False),
     
     # set to True to propagate MC extra smearing to the electron momentum error  
-    updateEnergyError = cms.bool(False),
+    updateEnergyError = cms.bool(True),
     
 )
 
