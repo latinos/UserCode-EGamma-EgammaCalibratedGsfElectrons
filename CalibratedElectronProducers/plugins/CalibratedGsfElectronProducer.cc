@@ -53,8 +53,7 @@ CalibratedGsfElectronProducer::CalibratedGsfElectronProducer( const edm::Paramet
   //basic checks
   if (isMC&&(dataset!="Summer11"&&dataset!="Fall11"&&dataset!="Summer12"))
    { throw cms::Exception("CalibratedgsfElectronProducer|ConfigError")<<"Unknown MC dataset" ; }
-//  if (!isMC&&(dataset!="Prompt"&&dataset!="ReReco"&&dataset!="Jan16ReReco"&&dataset!="Prompt2012"&&dataset!="ReReco2012"))
-  if (!isMC&&(dataset!="Prompt"&&dataset!="ReReco"&&dataset!="Jan16ReReco"))
+  if (!isMC&&(dataset!="Prompt"&&dataset!="ReReco"&&dataset!="Jan16ReReco"&&dataset!="Prompt2012"))
    { throw cms::Exception("CalibratedgsfElectronProducer|ConfigError")<<"Unknown Data dataset" ; }
   cout << "[CalibratedGsfElectronProducer] Correcting scale for dataset " << dataset << endl;
 
