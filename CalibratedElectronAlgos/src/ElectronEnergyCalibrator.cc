@@ -302,7 +302,7 @@ void ElectronEnergyCalibrator::computeNewEnergy
       } 
     // corrections for prompt 2012A and 2012B 
     } else if (dataset_=="Prompt2012") {                     
-      // values from https://hypernews.cern.ch/HyperNews/CMS/get/higgs2g/800.html
+      // values from https://hypernews.cern.ch/HyperNews/CMS/get/higgs2g/800.html	
       if (electron.isEB() && fabs(electron.superCluster()->eta())<1 and r9<0.94) {
         if (run>=190450 && run<=190781) corr = 1.-1.0049; 
 	if (run>=190782 && run<=190949) corr = 1.-1.0146;   
@@ -375,15 +375,27 @@ void ElectronEnergyCalibrator::computeNewEnergy
       if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9>=0.94) dsigMC = 0.0268;
       if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9<0.94) dsigMC = 0.0301;
       if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9>=0.94) dsigMC = 0.0293;   
-    } else if (dataset_=="Summer12"||dataset_=="Prompt2012") { // values from https://twiki.cern.ch/twiki/pub/CMS/EcalEnergyResolutionWithZee/oriented-Hgg-prompt-2012.pdf, consistant with Prompt2012 corrections
-      if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9<0.94) dsigMC = 0.0126;
-      if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9>=0.94) dsigMC = 0.0084;
-      if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 && r9<0.94) dsigMC = 0.0217;
-      if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 && r9>=0.94) dsigMC = 0.0291;
-      if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9<0.94) dsigMC = 0.0291;
-      if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9>=0.94) dsigMC = 0.0377;
-      if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9<0.94) dsigMC = 0.0467;
-      if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9>=0.94) dsigMC = 0.0438;   
+    } else if (dataset_=="Summer12"||dataset_=="Prompt2012") { 
+       // values from https://twiki.cern.ch/twiki/pub/CMS/EcalEnergyResolutionWithZee/oriented-Hgg-prompt-2012.pdf, consistant with Prompt2012 corrections
+      //if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9<0.94) dsigMC = 0.0126;
+      //if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9>=0.94) dsigMC = 0.0084;
+      //if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 && r9<0.94) dsigMC = 0.0217;
+      //if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 && r9>=0.94) dsigMC = 0.0291;
+      //if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9<0.94) dsigMC = 0.0291;
+      //if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9>=0.94) dsigMC = 0.0377;
+      //if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9<0.94) dsigMC = 0.0467;
+      //if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9>=0.94) dsigMC = 0.0438;   
+      // new values from https://hypernews.cern.ch/HyperNews/CMS/get/higgs2g/798.html
+      // and from https://hypernews.cern.ch/HyperNews/CMS/get/higgs2g/805.html for the EBLowEta
+      // averaging over gap and nogap for the EBLowEta case
+      if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9<0.94) dsigMC = 0.0120;
+      if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9>=0.94) dsigMC = 0.0092;
+      if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 && r9<0.94) dsigMC = 0.0222;
+      if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 && r9>=0.94) dsigMC = 0.0295;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9<0.94) dsigMC = 0.0334;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())<2 && r9>=0.94) dsigMC = 0.0366;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9<0.94) dsigMC = 0.0558;
+      if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9>=0.94) dsigMC = 0.0528;   
     }
 //  }
   
