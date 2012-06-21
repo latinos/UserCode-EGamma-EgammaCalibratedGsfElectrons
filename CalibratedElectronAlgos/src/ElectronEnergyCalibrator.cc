@@ -356,21 +356,21 @@ void ElectronEnergyCalibrator::computeNewEnergy
     } else if (dataset_=="May23ReReco") {                     
       // values from Shervin for May23ReReco (photon for step1*electron for step 2)	
       if (electron.isEB() && fabs(electron.superCluster()->eta())<1 and r9<0.94) {
-        corr = 1.-1.0143;
+        corr = 1.0143-1.;
       } else if (electron.isEB() && fabs(electron.superCluster()->eta())<1 and r9>=0.94) {      
-        corr = 1.-1.0089;
+        corr = 1.0089-1.;
       } else if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 and r9<0.94) {      
-        corr = 1.-0.9988;
+        corr = 0.9988-1.;
       } else if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 and r9>=0.94) {      
-        corr = 1.-0.9867;
+        corr = 0.9867-1.;
       } else if (electron.isEE() && fabs(electron.superCluster()->eta())<2 and r9<0.94) {
-        corr = 1.-1.0110;
+        corr = 1.0110-1.;
       } else if (electron.isEE() && fabs(electron.superCluster()->eta())<2 and r9>=0.94) {      
-        corr = 1.-1.0069;
+        corr = 1.0069-1.;
       } else if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 and r9<0.94) {      
-        corr = 1.-1.0095;
+        corr = 1.0095-1.;
       } else if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 and r9>=0.94) {      
-        corr = 1.-0.9981;
+        corr = 0.9981-1.;
       } 
     }
   } 
