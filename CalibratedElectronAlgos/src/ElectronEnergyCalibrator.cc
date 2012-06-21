@@ -77,7 +77,7 @@ void ElectronEnergyCalibrator::computeNewEnergy
  ( const reco::GsfElectron & electron, float r9, int run)
  {
   //double scEnergy = electron.superCluster()->energy() ;
-  double scEnergy = ecalEnergy() ;
+  double scEnergy = electron.ecalEnergy() ;
   float corr=0.;
   float dsigMC=0., corrMC=0.;
   newEnergyError_ = electron.ecalEnergyError() ;
