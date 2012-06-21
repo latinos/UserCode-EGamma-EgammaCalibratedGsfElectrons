@@ -53,24 +53,42 @@ void ElectronEnergyCalibrator::correct
    } else {
     e3x3    =   EcalClusterTools::e3x3(*(electron.superCluster()->seed()), &(endcapRecHits), &(*topology)); 
    }
+  if (debug_) std::cout <<std::endl;
   float r9 = e3x3/electron.superCluster()->rawEnergy();
-  if (debug_) std::cout << "[ElectronEnergCorrector] R9 " << r9 << std::endl;
+  if (debug_) std::cout << "[ElectronEnergCorrector] BEFORE pt, eta, phi " << electron.p4().pt() << " " <<
+    electron.p4().eta() << " " << electron.p4().phi() << std::endl;
+  if (debug_) std::cout << "[ElectronEnergCorrector] BEFORE ecalEnergy, tkMonemtum, 4momentum " << 
+   electron.ecalEnergy() << " " << electron.trackMomentumAtVtx().R() << " " <<
+   electron.p4().t() << std::endl;
+  if (debug_) std::cout << "[ElectronEnergCorrector] BEFORE  E/p, E/p error "<<
+    electron.eSuperClusterOverP()<<" "<<sqrt(
+			     (electron.ecalEnergyError()/electron.trackMomentumAtVtx().R())*(electron.ecalEnergyError()/electron.trackMomentumAtVtx().R()) +
+			     (electron.ecalEnergy()*electron.trackMomentumError()/electron.trackMomentumAtVtx().R()/electron.trackMomentumAtVtx().R())*
+			     (electron.ecalEnergy()*electron.trackMomentumError()/electron.trackMomentumAtVtx().R()/electron.trackMomentumAtVtx().R()))<<std::endl;
   
+
+  if (debug_) std::cout << "[ElectronEnergCorrector] BEFORE isEB, isEE, isEBEEgap " << electron.isEB() << " " <<
+   electron.isEE() << " " << electron.isEBEEGap() << std::endl;
+  if (debug_) std::cout << "[ElectronEnergCorrector] BEFORE R9, class " << r9 << " " << 
+   electron.classification() << std::endl;
+  if (debug_) std::cout << "[ElectronEnergCorrector] BEFORE comb momentum error " << electron.p4Error(reco::GsfElectron::P4_COMBINATION) << std::endl;
+
+
   // apply ECAL calibration scale and smearing factors depending on period and categories
   computeNewEnergy(electron, r9, event.run()) ;
   electron.correctEcalEnergy(newEnergy_,newEnergyError_) ;
   
   // apply E-p combination
-  if (debug_) std::cout << "[ElectronEnergCorrector] old comb momentum " << electron.p4(reco::GsfElectron::P4_COMBINATION).t() << std::endl;
-  if (debug_) std::cout << "[ElectronEnergCorrector] old comb momentum error " << electron.p4Error(reco::GsfElectron::P4_COMBINATION) << std::endl;
   computeEpCombination(electron) ;
-  //electron.correctMomentum(newMomentum_,errorTrackMomentum_,finalMomentumError_);
-  //std::cout << "[ElectronEnergCorrector] old comb momentum " << electron.p4().t() << std::endl;
-  //electron.setP4(newMomentum_) ;
-  //electron.setP4Error(finalMomentumError_); // this method does not exist
   electron.correctMomentum(newMomentum_,errorTrackMomentum_,finalMomentumError_);
-  if (debug_) std::cout << "[ElectronEnergCorrector] new comb momentum " << electron.p4(reco::GsfElectron::P4_COMBINATION).t() << std::endl;
-  if (debug_) std::cout << "[ElectronEnergCorrector] new comb momentum error " << electron.p4Error(reco::GsfElectron::P4_COMBINATION) << std::endl;
+  
+  if (debug_) std::cout << "[ElectronEnergCorrector] AFTER ecalEnergy, new comb momentum " << electron.ecalEnergy() << " " << electron.p4(reco::GsfElectron::P4_COMBINATION).t() << std::endl;
+  if (debug_) std::cout << "[ElectronEnergCorrector] AFTER  E/p, E/p error "<<
+    electron.eSuperClusterOverP()<<" "<<sqrt(
+					     (electron.ecalEnergyError()/electron.trackMomentumAtVtx().R())*(electron.ecalEnergyError()/electron.trackMomentumAtVtx().R()) +
+					     (electron.ecalEnergy()*electron.trackMomentumError()/electron.trackMomentumAtVtx().R()/electron.trackMomentumAtVtx().R())*
+					     (electron.ecalEnergy()*electron.trackMomentumError()/electron.trackMomentumAtVtx().R()/electron.trackMomentumAtVtx().R()))<<std::endl;
+  if (debug_) std::cout << "[ElectronEnergCorrector] AFTER comb momentum error " << electron.p4Error(reco::GsfElectron::P4_COMBINATION) << std::endl;
  }
 
 void ElectronEnergyCalibrator::computeNewEnergy
@@ -483,46 +501,98 @@ void ElectronEnergyCalibrator::computeEpCombination
 			     (electron.ecalEnergyError()/trackMomentum)*(electron.ecalEnergyError()/trackMomentum) +
 			     (scEnergy*errorTrackMomentum_/trackMomentum/trackMomentum)*
 			     (scEnergy*errorTrackMomentum_/trackMomentum/trackMomentum));
+    //old comb  
+//     if ( eOverP  > 1 + 2.5*errorEOverP )
+//       {
+// 	finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError();
+// 	if ((elClass==reco::GsfElectron::GOLDEN) && electron.isEB() && (eOverP<1.15))
+// 	  {
+// 	    if (scEnergy<15) {finalMomentum = trackMomentum ; finalMomentumError = errorTrackMomentum_;}
+// 	  }
+//       }
+//     else if ( eOverP < 1 - 2.5*errorEOverP )
+//       {
+// 	finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError();
+// 	if (elClass==reco::GsfElectron::SHOWERING)
+// 	  {
+// 	    if (electron.isEB())
+// 	      {
+// 		if(scEnergy<18) {finalMomentum = trackMomentum; finalMomentumError = errorTrackMomentum_;}
+// 	      }
+// 	    else if (electron.isEE())
+// 	      {
+// 		if(scEnergy<13) {finalMomentum = trackMomentum; finalMomentumError = errorTrackMomentum_;}
+// 	      }
+// 	    else
+// 	      { edm::LogWarning("ElectronMomentumCorrector::correct")<<"nor barrel neither endcap electron ?!" ; }
+// 	  }
+// 	else if (electron.isGap())
+// 	  {
+// 	    if(scEnergy<60) {finalMomentum = trackMomentum; finalMomentumError = errorTrackMomentum_;}
+// 	  }
+//       }
+//     else 
+//       {
+// 	// combination
+// 	finalMomentum = (scEnergy/electron.ecalEnergyError()/electron.ecalEnergyError() + trackMomentum/errorTrackMomentum_/errorTrackMomentum_) /
+// 	  (1/electron.ecalEnergyError()/electron.ecalEnergyError() + 1/errorTrackMomentum_/errorTrackMomentum_);
+// 	float finalMomentumVariance = 1 / (1/electron.ecalEnergyError()/electron.ecalEnergyError() + 1/errorTrackMomentum_/errorTrackMomentum_);
+// 	finalMomentumError = sqrt(finalMomentumVariance);
+//       }
+//   }
     
-    if ( eOverP  > 1 + 2.5*errorEOverP )
+//new comb
+
+    bool eleIsNotInCombination = false ;
+     if ( (eOverP  > 1 + 2.5*errorEOverP) || (eOverP  < 1 - 2.5*errorEOverP) || (eOverP < 0.8) || (eOverP > 1.3) )
+      { eleIsNotInCombination = true ; }
+     if (eleIsNotInCombination)
       {
-	finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError();
-	if ((elClass==reco::GsfElectron::GOLDEN) && electron.isEB() && (eOverP<1.15))
-	  {
-	    if (scEnergy<15) {finalMomentum = trackMomentum ; finalMomentumError = errorTrackMomentum_;}
-	  }
+       if (eOverP > 1)
+        { finalMomentum = scEnergy ; finalMomentumError = electron.ecalEnergyError() ; }
+       else
+        {
+         if (elClass == reco::GsfElectron::GOLDEN)
+          { finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError(); }
+         if (elClass == reco::GsfElectron::BIGBREM)
+          {
+           if (scEnergy<36)
+            { finalMomentum = trackMomentum ; finalMomentumError = errorTrackMomentum_ ; }
+           else
+            { finalMomentum = scEnergy ; finalMomentumError = electron.ecalEnergyError() ; }
+          }
+         if (elClass == reco::GsfElectron::BADTRACK)
+          { finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError() ; }
+         if (elClass == reco::GsfElectron::SHOWERING)
+          {
+           if (scEnergy<30)
+            { finalMomentum = trackMomentum ; finalMomentumError = errorTrackMomentum_; }
+           else
+            { finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError();}
+          }
+         if (elClass == reco::GsfElectron::GAP)
+          {
+           if (scEnergy<60)
+            { finalMomentum = trackMomentum ; finalMomentumError = errorTrackMomentum_ ; }
+           else
+            { finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError() ; }
+          }
+        }
       }
-    else if ( eOverP < 1 - 2.5*errorEOverP )
+ 
+     else
       {
-	finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError();
-	if (elClass==reco::GsfElectron::SHOWERING)
-	  {
-	    if (electron.isEB())
-	      {
-		if(scEnergy<18) {finalMomentum = trackMomentum; finalMomentumError = errorTrackMomentum_;}
-	      }
-	    else if (electron.isEE())
-	      {
-		if(scEnergy<13) {finalMomentum = trackMomentum; finalMomentumError = errorTrackMomentum_;}
-	      }
-	    else
-	      { edm::LogWarning("ElectronMomentumCorrector::correct")<<"nor barrel neither endcap electron ?!" ; }
-	  }
-	else if (electron.isGap())
-	  {
-	    if(scEnergy<60) {finalMomentum = trackMomentum; finalMomentumError = errorTrackMomentum_;}
-	  }
+       // combination
+       finalMomentum = (scEnergy/electron.ecalEnergyError()/electron.ecalEnergyError() + trackMomentum/errorTrackMomentum_/errorTrackMomentum_) /
+         (1/electron.ecalEnergyError()/electron.ecalEnergyError() + 1/errorTrackMomentum_/errorTrackMomentum_);
+       float finalMomentumVariance = 1 / (1/electron.ecalEnergyError()/electron.ecalEnergyError() + 1/errorTrackMomentum_/errorTrackMomentum_);
+       finalMomentumError = sqrt(finalMomentumVariance);
       }
-    else 
-      {
-	// combination
-	finalMomentum = (scEnergy/electron.ecalEnergyError()/electron.ecalEnergyError() + trackMomentum/errorTrackMomentum_/errorTrackMomentum_) /
-	  (1/electron.ecalEnergyError()/electron.ecalEnergyError() + 1/errorTrackMomentum_/errorTrackMomentum_);
-	float finalMomentumVariance = 1 / (1/electron.ecalEnergyError()/electron.ecalEnergyError() + 1/errorTrackMomentum_/errorTrackMomentum_);
-	finalMomentumError = sqrt(finalMomentumVariance);
-      }
-    
-  }
+  } 
+
+
+  
+// }
   
   math::XYZTLorentzVector oldMomentum = electron.p4() ;
   newMomentum_ = math::XYZTLorentzVector
@@ -531,6 +601,8 @@ void ElectronEnergyCalibrator::computeEpCombination
      oldMomentum.z()*finalMomentum/oldMomentum.t(),
      finalMomentum ) ;
   finalMomentumError_ =  finalMomentumError;  
-  if (debug_) std::cout << "[ElectronEnergCorrector] old comb momentum " << oldMomentum.t() << " new comb momentum " << newMomentum_.t() << std::endl;
+  //if (debug_) std::cout << "[ElectronEnergCorrector] old comb momentum " << oldMomentum.t() << " new comb momentum " << newMomentum_.t() << std::endl;
 
  }
+
+ 
