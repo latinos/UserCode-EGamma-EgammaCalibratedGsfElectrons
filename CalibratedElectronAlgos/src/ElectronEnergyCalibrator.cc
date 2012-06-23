@@ -318,7 +318,7 @@ void ElectronEnergyCalibrator::computeNewEnergy
 	if (run>=177140 && run<=178421) corr = 0.0056;
 	if (run>=178424 && run<=180252) corr = 0.0047;
       } 
-    // corrections for prompt 2012A and 2012B 
+    // corrections for 2012A and 2012B 
     } else if (dataset_=="ICHEP2012") {                     
       // values from https://hypernews.cern.ch/HyperNews/CMS/get/higgs2g/873.html	
       if (electron.isEB() && fabs(electron.superCluster()->eta())<1 and r9<0.94) {

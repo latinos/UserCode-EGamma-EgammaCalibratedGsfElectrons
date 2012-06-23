@@ -45,9 +45,7 @@ process.out = cms.OutputModule("PoolOutputModule",
 
 process.load("EgammaCalibratedGsfElectrons.CalibratedElectronProducers.calibratedGsfElectrons_cfi")
 
-#process.calibratedGsfElectrons.inputDataset = cms.string("Jun08ReReco")
-#process.calibratedGsfElectrons.inputDataset = cms.string("May23ReReco")
-process.calibratedGsfElectrons.inputDataset = cms.string("Prompt2012")
+process.calibratedGsfElectrons.inputDataset = cms.string("ICHEP2012")
 #process.calibratedGsfElectrons.inputDataset = cms.string("Summer12")
 #process.calibratedGsfElectrons.inputDataset = cms.string("Jan16ReReco")
 #process.calibratedGsfElectrons.inputDataset = cms.string("Prompt")
