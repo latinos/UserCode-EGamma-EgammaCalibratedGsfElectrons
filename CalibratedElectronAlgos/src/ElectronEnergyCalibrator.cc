@@ -76,7 +76,7 @@ void ElectronEnergyCalibrator::correct
 
   // apply ECAL calibration scale and smearing factors depending on period and categories
   computeNewEnergy(electron, r9, event.run()) ;
-  electron.correctEcalEnergy(newEnergy_,newEnergyError_) ;
+  //electron.correctEcalEnergy(newEnergy_,newEnergyError_) ;
   
   // apply E-p combination
   computeEpCombination(electron) ;
@@ -94,7 +94,8 @@ void ElectronEnergyCalibrator::correct
 void ElectronEnergyCalibrator::computeNewEnergy
  ( const reco::GsfElectron & electron, float r9, int run)
  {
-  double scEnergy = electron.superCluster()->energy() ;
+  //double scEnergy = electron.superCluster()->energy() ;
+  double scEnergy = electron.ecalEnergy() ;
   float corr=0., scale=1.;
   float dsigMC=0., corrMC=0.;
   newEnergyError_ = electron.ecalEnergyError() ;
@@ -472,7 +473,8 @@ void ElectronEnergyCalibrator::computeEpCombination
  ( reco::GsfElectron & electron )
  {
 
-  float scEnergy = electron.ecalEnergy() ;
+  //float scEnergy = electron.ecalEnergy() ;
+  float scEnergy = newEnergy_ ;
   int elClass = electron.classification() ;
 
   float trackMomentum  = electron.trackMomentumAtVtx().R() ;
