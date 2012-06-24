@@ -1,0 +1,87 @@
+EB-absEta_0_1-bad	runNumber	190450	190781	1.0021	0.0004
+EB-absEta_0_1-bad	runNumber	190782	190949	1.0154	0.0004
+EB-absEta_0_1-bad	runNumber	190950	191833	1.0046	0.0002
+EB-absEta_0_1-bad	runNumber	191834	193686	1.0017	0.0002
+EB-absEta_0_1-bad	runNumber	193746	194210	1.0020	0.0002
+EB-absEta_0_1-bad	runNumber	194211	194479	1.0037	0.0002
+EB-absEta_0_1-bad	runNumber	194480	195147	1.0047	0.0002
+EB-absEta_0_1-bad	runNumber	195148	195350	1.0053	0.0003
+EB-absEta_0_1-bad	runNumber	195396	195530	1.0042	0.0003
+EB-absEta_0_1-bad	runNumber	195531	196529	0.9981	0.0002
+
+EB-absEta_0_1-gold	runNumber	190450	190781	0.9962	0.0004
+EB-absEta_0_1-gold	runNumber	190782	190949	1.0096	0.0004
+EB-absEta_0_1-gold	runNumber	190950	191833	0.9988	0.0003
+EB-absEta_0_1-gold	runNumber	191834	193686	0.9958	0.0003
+EB-absEta_0_1-gold	runNumber	193746	194210	0.9962	0.0002
+EB-absEta_0_1-gold	runNumber	194211	194479	0.9979	0.0002
+EB-absEta_0_1-gold	runNumber	194480	195147	0.9989	0.0002
+EB-absEta_0_1-gold	runNumber	195148	195350	0.9995	0.0004
+EB-absEta_0_1-gold	runNumber	195396	195530	0.9984	0.0003
+EB-absEta_0_1-gold	runNumber	195531	196529	0.9922	0.0002
+
+EB-absEta_1_1.4442-bad	runNumber	190450	190781	1.0133	0.0018
+EB-absEta_1_1.4442-bad	runNumber	190782	190949	0.9997	0.0023
+EB-absEta_1_1.4442-bad	runNumber	190950	191833	1.0134	0.0009
+EB-absEta_1_1.4442-bad	runNumber	191834	193686	1.0104	0.0010
+EB-absEta_1_1.4442-bad	runNumber	193746	194210	1.0094	0.0007
+EB-absEta_1_1.4442-bad	runNumber	194211	194479	1.0118	0.0009
+EB-absEta_1_1.4442-bad	runNumber	194480	195147	1.0137	0.0006
+EB-absEta_1_1.4442-bad	runNumber	195148	195350	1.0142	0.0014
+EB-absEta_1_1.4442-bad	runNumber	195396	195530	1.0129	0.0013
+EB-absEta_1_1.4442-bad	runNumber	195531	196529	1.0065	0.0005
+
+EB-absEta_1_1.4442-gold	runNumber	190450	190781	1.0020	0.0021
+EB-absEta_1_1.4442-gold	runNumber	190782	190949	0.9883	0.0025
+EB-absEta_1_1.4442-gold	runNumber	190950	191833	1.0021	0.0014
+EB-absEta_1_1.4442-gold	runNumber	191834	193686	0.9991	0.0014
+EB-absEta_1_1.4442-gold	runNumber	193746	194210	0.9980	0.0013
+EB-absEta_1_1.4442-gold	runNumber	194211	194479	1.0005	0.0013
+EB-absEta_1_1.4442-gold	runNumber	194480	195147	1.0024	0.0012
+EB-absEta_1_1.4442-gold	runNumber	195148	195350	1.0029	0.0018
+EB-absEta_1_1.4442-gold	runNumber	195396	195530	1.0016	0.0017
+EB-absEta_1_1.4442-gold	runNumber	195531	196529	0.9951	0.0012
+
+EE-absEta_1.566_2-bad	runNumber	190450	190781	0.9989	0.0025
+EE-absEta_1.566_2-bad	runNumber	190782	190949	1.0123	0.0029
+EE-absEta_1.566_2-bad	runNumber	190950	191833	1.0042	0.0013
+EE-absEta_1.566_2-bad	runNumber	191834	193686	1.0037	0.0015
+EE-absEta_1.566_2-bad	runNumber	193746	194210	1.0047	0.0011
+EE-absEta_1.566_2-bad	runNumber	194211	194479	1.0037	0.0014
+EE-absEta_1.566_2-bad	runNumber	194480	195147	1.0030	0.0010
+EE-absEta_1.566_2-bad	runNumber	195148	195350	1.0051	0.0023
+EE-absEta_1.566_2-bad	runNumber	195396	195530	1.0003	0.0020
+EE-absEta_1.566_2-bad	runNumber	195531	196529	1.0052	0.0009
+
+EE-absEta_1.566_2-gold	runNumber	190450	190781	0.9931	0.0027
+EE-absEta_1.566_2-gold	runNumber	190782	190949	1.0066	0.0031
+EE-absEta_1.566_2-gold	runNumber	190950	191833	0.9985	0.0016
+EE-absEta_1.566_2-gold	runNumber	191834	193686	0.9979	0.0018
+EE-absEta_1.566_2-gold	runNumber	193746	194210	0.9990	0.0015
+EE-absEta_1.566_2-gold	runNumber	194211	194479	0.9979	0.0017
+EE-absEta_1.566_2-gold	runNumber	194480	195147	0.9972	0.0014
+EE-absEta_1.566_2-gold	runNumber	195148	195350	0.9994	0.0025
+EE-absEta_1.566_2-gold	runNumber	195396	195530	0.9945	0.0022
+EE-absEta_1.566_2-gold	runNumber	195531	196529	0.9994	0.0013
+
+EE-absEta_2_2.5-bad	runNumber	190450	190781	1.0052	0.0027
+EE-absEta_2_2.5-bad	runNumber	190782	190949	1.0077	0.0025
+EE-absEta_2_2.5-bad	runNumber	190950	191833	0.9900	0.0015
+EE-absEta_2_2.5-bad	runNumber	191834	193686	0.9893	0.0016
+EE-absEta_2_2.5-bad	runNumber	193746	194210	1.0042	0.0015
+EE-absEta_2_2.5-bad	runNumber	194211	194479	1.0036	0.0018
+EE-absEta_2_2.5-bad	runNumber	194480	195147	1.0069	0.0014
+EE-absEta_2_2.5-bad	runNumber	195148	195350	1.0133	0.0035
+EE-absEta_2_2.5-bad	runNumber	195396	195530	0.9999	0.0029
+EE-absEta_2_2.5-bad	runNumber	195531	196529	1.0475	0.0012
+
+EE-absEta_2_2.5-gold	runNumber	190450	190781	0.9899	0.0027
+EE-absEta_2_2.5-gold	runNumber	190782	190949	0.9924	0.0025
+EE-absEta_2_2.5-gold	runNumber	190950	191833	0.9745	0.0014
+EE-absEta_2_2.5-gold	runNumber	191834	193686	0.9738	0.0016
+EE-absEta_2_2.5-gold	runNumber	193746	194210	0.9889	0.0014
+EE-absEta_2_2.5-gold	runNumber	194211	194479	0.9883	0.0017
+EE-absEta_2_2.5-gold	runNumber	194480	195147	0.9916	0.0013
+EE-absEta_2_2.5-gold	runNumber	195148	195350	0.9982	0.0035
+EE-absEta_2_2.5-gold	runNumber	195396	195530	0.9845	0.0029
+EE-absEta_2_2.5-gold	runNumber	195531	196529	1.0329	0.0011
