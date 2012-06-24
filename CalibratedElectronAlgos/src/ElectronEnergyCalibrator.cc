@@ -332,7 +332,7 @@ void ElectronEnergyCalibrator::computeNewEnergy
 	if (run>=194480 && run<=195147) scale = 1.0047;   
 	if (run>=195148 && run<=195350) scale = 1.0053;   
 	if (run>=195396 && run<=195530) scale = 1.0042;   
-	if (run>=195531 && run<=196529) scale = 0.9981;   
+	if (run>=195531 && run<=196531) scale = 0.9981;   
       } else if (electron.isEB() && fabs(electron.superCluster()->eta())<1 and r9>=0.94) {      
         if (run>=190450 && run<=190781) scale = 0.9962; 
 	if (run>=190782 && run<=190949) scale = 1.0096;   
@@ -343,7 +343,7 @@ void ElectronEnergyCalibrator::computeNewEnergy
 	if (run>=194480 && run<=195147) scale = 0.9989;   
 	if (run>=195148 && run<=195350) scale = 0.9995;   
 	if (run>=195396 && run<=195530) scale = 0.9984;   
-	if (run>=195531 && run<=196529) scale = 0.9922;   
+	if (run>=195531 && run<=196531) scale = 0.9922;   
       } else if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 and r9<0.94) {      
         if (run>=190450 && run<=190781) scale = 1.0133; 
 	if (run>=190782 && run<=190949) scale = 0.9997;   
@@ -354,7 +354,7 @@ void ElectronEnergyCalibrator::computeNewEnergy
 	if (run>=194480 && run<=195147) scale = 1.0137;   
 	if (run>=195148 && run<=195350) scale = 1.0142;   
 	if (run>=195396 && run<=195530) scale = 1.0129;   
-	if (run>=195531 && run<=196529) scale = 1.0065;   
+	if (run>=195531 && run<=196531) scale = 1.0065;   
       } else if (electron.isEB() && fabs(electron.superCluster()->eta())>=1 and r9>=0.94) {      
         if (run>=190450 && run<=190781) scale = 1.0020; 
 	if (run>=190782 && run<=190949) scale = 0.9883;   
@@ -365,7 +365,7 @@ void ElectronEnergyCalibrator::computeNewEnergy
 	if (run>=194480 && run<=195147) scale = 1.0024;   
 	if (run>=195148 && run<=195350) scale = 1.0029;   
 	if (run>=195396 && run<=195530) scale = 1.0016;   
-	if (run>=195531 && run<=196529) scale = 0.9951;   
+	if (run>=195531 && run<=196531) scale = 0.9951;   
       } else if (electron.isEE() && fabs(electron.superCluster()->eta())<2 and r9<0.94) {
         if (run>=190450 && run<=190781) scale = 0.9989; 
 	if (run>=190782 && run<=190949) scale = 1.0123;   
@@ -376,7 +376,7 @@ void ElectronEnergyCalibrator::computeNewEnergy
 	if (run>=194480 && run<=195147) scale = 1.0030;   
 	if (run>=195148 && run<=195350) scale = 1.0051;   
 	if (run>=195396 && run<=195530) scale = 1.0003;   
-	if (run>=195531 && run<=196529) scale = 1.0052;   
+	if (run>=195531 && run<=196531) scale = 1.0052;   
       } else if (electron.isEE() && fabs(electron.superCluster()->eta())<2 and r9>=0.94) {      
         if (run>=190450 && run<=190781) scale = 0.9931; 
 	if (run>=190782 && run<=190949) scale = 1.0066;   
@@ -387,7 +387,7 @@ void ElectronEnergyCalibrator::computeNewEnergy
 	if (run>=194480 && run<=195147) scale = 0.9972;   
 	if (run>=195148 && run<=195350) scale = 0.9994;   
 	if (run>=195396 && run<=195530) scale = 0.9945;   
-	if (run>=195531 && run<=196529) scale = 0.9994;   
+	if (run>=195531 && run<=196531) scale = 0.9994;   
       } else if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 and r9<0.94) {      
         if (run>=190450 && run<=190781) scale = 1.0052; 
 	if (run>=190782 && run<=190949) scale = 1.0077;   
@@ -398,7 +398,7 @@ void ElectronEnergyCalibrator::computeNewEnergy
 	if (run>=194480 && run<=195147) scale = 1.0069;   
 	if (run>=195148 && run<=195350) scale = 1.0133;   
 	if (run>=195396 && run<=195530) scale = 0.9999;   
-	if (run>=195531 && run<=196529) scale = 1.0475;   
+	if (run>=195531 && run<=196531) scale = 1.0475;   
       } else if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 and r9>=0.94) {      
         if (run>=190450 && run<=190781) scale = 0.9899; 
 	if (run>=190782 && run<=190949) scale = 0.9924;   
@@ -409,7 +409,7 @@ void ElectronEnergyCalibrator::computeNewEnergy
 	if (run>=194480 && run<=195147) scale = 0.9916;   
 	if (run>=195148 && run<=195350) scale = 0.9982;   
 	if (run>=195396 && run<=195530) scale = 0.9845;   
-	if (run>=195531 && run<=196529) scale = 1.0329;   
+	if (run>=195531 && run<=196531) scale = 1.0329;   
       } 
     }  
   } 
