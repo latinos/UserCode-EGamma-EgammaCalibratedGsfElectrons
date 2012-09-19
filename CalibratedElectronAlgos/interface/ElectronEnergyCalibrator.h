@@ -14,8 +14,8 @@ class ElectronEnergyCalibrator
 {
  public:
 
-  ElectronEnergyCalibrator(std::string dataset, bool isAOD, bool isMC, bool updateEnergyError, bool debug) : dataset_(dataset),
-   isAOD_(isAOD), isMC_(isMC), updateEnergyError_(updateEnergyError), debug_(debug) {}
+  ElectronEnergyCalibrator(std::string dataset, bool isAOD, bool isMC, bool updateEnergyError, bool applyCorrections, bool debug) : dataset_(dataset),
+   isAOD_(isAOD), isMC_(isMC), updateEnergyError_(updateEnergyError), applyCorrections_(applyCorrections), debug_(debug) {}
 
   void correct(reco::GsfElectron &, const edm::Event&, const edm::EventSetup&);
 
@@ -38,6 +38,7 @@ class ElectronEnergyCalibrator
   bool isAOD_;
   bool isMC_;
   bool updateEnergyError_;
+  bool applyCorrections_;
   bool debug_;
    
 };

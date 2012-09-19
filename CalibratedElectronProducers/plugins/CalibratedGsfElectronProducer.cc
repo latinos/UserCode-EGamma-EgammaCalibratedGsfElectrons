@@ -48,15 +48,14 @@ CalibratedGsfElectronProducer::CalibratedGsfElectronProducer( const edm::Paramet
   isMC = cfg.getParameter<bool>("isMC");
   isAOD = cfg.getParameter<bool>("isAOD");
   updateEnergyError = cfg.getParameter<bool>("updateEnergyError");
+  applyCorrections = cfg.getParameter<bool>("applyCorrections");
   debug = cfg.getParameter<bool>("debug");
   
   //basic checks
-  if (isMC&&(dataset!="Summer11"&&dataset!="Fall11"&&dataset!="Summer12"))
+  if (isMC&&(dataset!="Summer11"&&dataset!="Fall11"))
    { throw cms::Exception("CalibratedgsfElectronProducer|ConfigError")<<"Unknown MC dataset" ; }
-  if (!isMC&&(dataset!="Prompt"&&dataset!="ReReco"&&dataset!="Jan16ReReco"&&dataset!="ICHEP2012"))
+  if (!isMC&&(dataset!="Prompt"&&dataset!="ReReco"&&dataset!="Jan16ReReco"))
    { throw cms::Exception("CalibratedgsfElectronProducer|ConfigError")<<"Unknown Data dataset" ; }
-  cout << "[CalibratedGsfElectronProducer] Correcting scale for dataset " << dataset << endl;
-
  }
  
 CalibratedGsfElectronProducer::~CalibratedGsfElectronProducer()
@@ -82,7 +81,7 @@ void CalibratedGsfElectronProducer::produce( edm::Event & event, const edm::Even
       electrons->push_back(*electron->clone()) ;
    }
   
-  ElectronEnergyCalibrator theEnCorrector(dataset, isAOD, isMC, updateEnergyError, debug);
+  ElectronEnergyCalibrator theEnCorrector(dataset, isAOD, isMC, updateEnergyError, applyCorrections, debug);
 
   for
    ( ele = electrons->begin() ;

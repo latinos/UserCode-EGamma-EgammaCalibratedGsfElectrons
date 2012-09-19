@@ -25,6 +25,7 @@ class CalibratedGsfElectronProducer: public edm::EDProducer
     bool isAOD ;
     bool isMC ;
     bool updateEnergyError ;
+    bool applyCorrections ;
     bool debug ;
     
  } ;
