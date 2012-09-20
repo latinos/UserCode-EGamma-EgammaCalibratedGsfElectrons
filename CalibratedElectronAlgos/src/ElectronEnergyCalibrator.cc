@@ -29,28 +29,15 @@ void ElectronEnergyCalibrator::correct
   if (applyCorrections_){
 
        // compute r9
-       bool validEcalRecHits=true;
        Handle<EcalRecHitCollection> barrelHitHandle;
-       EcalRecHitCollection barrelRecHits;
-       //InputTag ebhits("ecalRecHit","EcalRecHitsEB");
        if (!isAOD_) event.getByLabel("EcalRecHitsEB", barrelHitHandle);
        else event.getByLabel("reducedEcalRecHitsEB", barrelHitHandle);
-       if (!barrelHitHandle.isValid()) {
-     //    edm::LogError("PhotonProducer") << "Error! Can't get the product "<<barrelEcalHits_.label();
-         validEcalRecHits=false; 
-       }
-       if (  validEcalRecHits)  barrelRecHits = *(barrelHitHandle.product());
+       EcalRecHitCollection barrelRecHits = *(barrelHitHandle.product());
       
        Handle<EcalRecHitCollection> endcapHitHandle;
-       //InputTag eehits("ecalRecHit","EcalRecHitsEE");
        if (!isAOD_) event.getByLabel("EcalRecHitsEE", endcapHitHandle);
        else event.getByLabel("reducedEcalRecHitsEE", endcapHitHandle);
-       EcalRecHitCollection endcapRecHits;
-       if (!endcapHitHandle.isValid()) {
-     //    edm::LogError("PhotonProducer") << "Error! Can't get the product "<<endcapEcalHits_.label();
-         validEcalRecHits=false; 
-       }
-       if( validEcalRecHits) endcapRecHits = *(endcapHitHandle.product());
+       EcalRecHitCollection endcapRecHits = *(endcapHitHandle.product());
      
        if (cacheIDTopo!=eventSetup.get<CaloTopologyRecord>().cacheIdentifier()){
          cacheIDTopo=eventSetup.get<CaloTopologyRecord>().cacheIdentifier();
@@ -67,23 +54,30 @@ void ElectronEnergyCalibrator::correct
         } else {
          e3x3    =   EcalClusterTools::e3x3(*(electron.superCluster()->seed()), &(endcapRecHits), &(*topology)); 
         }
+       if (debug_) std::cout <<std::endl;
        float r9 = e3x3/electron.superCluster()->rawEnergy();
+       if (debug_) std::cout << "[ElectronEnergCorrector] BEFORE pt, eta, phi " << electron.p4().pt() << " " <<	 electron.p4().eta() << " " << electron.p4().phi() << std::endl;	 
+       if (debug_) std::cout << "[ElectronEnergCorrector] BEFORE ecalEnergy, tkMonemtum, 4momentum " << electron.ecalEnergy() << " " << electron.trackMomentumAtVtx().R() << " " <<	electron.p4().t() << std::endl;	 
+       if (debug_) std::cout << "[ElectronEnergCorrector] BEFORE  E/p, E/p error " << electron.eSuperClusterOverP()<<" "<<sqrt(	 
+                              (electron.ecalEnergyError()/electron.trackMomentumAtVtx().R())*(electron.ecalEnergyError()/electron.trackMomentumAtVtx().R()) +	 
+                              (electron.ecalEnergy()*electron.trackMomentumError()/electron.trackMomentumAtVtx().R()/electron.trackMomentumAtVtx().R())*	 
+                              (electron.ecalEnergy()*electron.trackMomentumError()/electron.trackMomentumAtVtx().R()/electron.trackMomentumAtVtx().R())) << std::endl;	 
+ 	 
+ 	 
+       if (debug_) std::cout << "[ElectronEnergCorrector] BEFORE isEB, isEE, isEBEEgap " << electron.isEB() << " " << electron.isEE() << " " << electron.isEBEEGap() << std::endl;	 
+       if (debug_) std::cout << "[ElectronEnergCorrector] BEFORE R9, class " << r9 << " " << electron.classification() << std::endl;	 
+       if (debug_) std::cout << "[ElectronEnergCorrector] BEFORE comb momentum error " << electron.p4Error(reco::GsfElectron::P4_COMBINATION) << std::endl;
      
        // apply ECAL calibration scale and smearing factors depending on period and categories
        computeNewEnergy(electron, r9, event.run()) ;
-       electron.correctEcalEnergy(newEnergy_,newEnergyError_) ;
+       //electron.correctEcalEnergy(newEnergy_,newEnergyError_) ;
        
        // apply E-p combination
-       if (debug_) std::cout << "[ElectronEnergCorrector] old comb momentum " << electron.p4(reco::GsfElectron::P4_COMBINATION).t() << std::endl;
-       if (debug_) std::cout << "[ElectronEnergCorrector] old comb momentum error " << electron.p4Error(reco::GsfElectron::P4_COMBINATION) << std::endl;
        computeEpCombination(electron) ;
-       //electron.correctMomentum(newMomentum_,errorTrackMomentum_,finalMomentumError_);
-       //std::cout << "[ElectronEnergCorrector] old comb momentum " << electron.p4().t() << std::endl;
-       //electron.setP4(newMomentum_) ;
-       //electron.setP4Error(finalMomentumError_); // this method does not exist
        electron.correctMomentum(newMomentum_,errorTrackMomentum_,finalMomentumError_);
-       if (debug_) std::cout << "[ElectronEnergCorrector] new comb momentum " << electron.p4(reco::GsfElectron::P4_COMBINATION).t() << std::endl;
-       if (debug_) std::cout << "[ElectronEnergCorrector] new comb momentum error " << electron.p4Error(reco::GsfElectron::P4_COMBINATION) << std::endl;
+       if (debug_) std::cout << "[ElectronEnergCorrector] AFTER ecalEnergy, new comb momentum " << newEnergy_ << " " << electron.p4(reco::GsfElectron::P4_COMBINATION).t() << std::endl;
+       if (debug_) std::cout << "[ElectronEnergCorrector] AFTER  E/p, E/p error "<< electron.eSuperClusterOverP() << " " << sqrt((electron.ecalEnergyError()/electron.trackMomentumAtVtx().R())*(electron.ecalEnergyError()/electron.trackMomentumAtVtx().R())  + (electron.ecalEnergy()*electron.trackMomentumError()/electron.trackMomentumAtVtx().R()/electron.trackMomentumAtVtx().R()) * (electron.ecalEnergy()*electron.trackMomentumError()/electron.trackMomentumAtVtx().R()/electron.trackMomentumAtVtx().R()))<<std::endl;
+       if (debug_) std::cout << "[ElectronEnergCorrector] AFTER comb momentum error " << electron.p4Error(reco::GsfElectron::P4_COMBINATION) << std::endl;
 
   } else { if (debug_) std::cout <<"You choose not to apply corrections"<<std::endl;}
  }
@@ -91,7 +85,8 @@ void ElectronEnergyCalibrator::correct
 void ElectronEnergyCalibrator::computeNewEnergy
  ( const reco::GsfElectron & electron, float r9, int run)
  {
-  double scEnergy = electron.superCluster()->energy() ;
+  //double scEnergy = electron.superCluster()->energy() ;
+  double scEnergy = electron.ecalEnergy() ;
   float corr=0.;
   float dsigMC=0., corrMC=0.;
   newEnergyError_ = electron.ecalEnergyError() ;
@@ -319,7 +314,6 @@ void ElectronEnergyCalibrator::computeNewEnergy
   } 
     // MC smearing dsig is needed also for data for theenergy error, take it from the last MC values consistant
     // with the data choice
-//  else  { // MC corrections
     if (dataset_=="Summer11"||dataset_=="ReReco") { // values from https://indico.cern.ch/conferenceDisplay.py?confId=146386
       if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9<0.94) dsigMC = 0.01;
       if (electron.isEB() && fabs(electron.superCluster()->eta())<1 && r9>=0.94) dsigMC = 0.0099;
@@ -339,7 +333,6 @@ void ElectronEnergyCalibrator::computeNewEnergy
       if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9<0.94) dsigMC = 0.0301;
       if (electron.isEE() && fabs(electron.superCluster()->eta())>=2 && r9>=0.94) dsigMC = 0.0293;   
     }
-//  }
   
   // now correct the energy
   // correction for data
@@ -348,13 +341,15 @@ void ElectronEnergyCalibrator::computeNewEnergy
   if (isMC_) {
     CLHEP::RandGaussQ gaussDistribution(rng->getEngine(), 1.,dsigMC);
     corrMC = gaussDistribution.fire();
+    if (debug_) std::cout << "[ElectronEnergyCalibrator] unsmeared energy " << scEnergy << std::endl;
     newEnergy_ = scEnergy*corrMC;  
+    if (debug_) std::cout << "[ElectronEnergyCalibrator] smeared energy " << newEnergy_ << std::endl;
   }  
   // correct energy error for MC and for data as error is obtained from (ideal) MC parametrisation
   if (updateEnergyError_)
    newEnergyError_ = sqrt(newEnergyError_*newEnergyError_ + dsigMC*dsigMC*newEnergy_*newEnergy_) ;
-  if (debug_) std::cout << "[ElectronEnergyCalibrator] SC corrected energy " << electron.superCluster()->energy() << " new corrected energy " << newEnergy_ << std::endl;
-  if (debug_) std::cout << "[ElectronEnergyCalibrator] SC corrected energy error " << electron.ecalEnergyError() << " new corrected energy error " << newEnergyError_ << std::endl;
+  if (debug_) std::cout << "[ElectronEnergyCalibrator] SC corrected energy " << electron.ecalEnergy() << " new corrected energy " << newEnergy_ << std::endl;
+  if (debug_) std::cout << "[ElectronEnergyCalibrator] SC corrected energy error " << electron.ecalEnergyError() << " recalibrated ecalEnergy error " << newEnergyError_ << std::endl;
 
  }
 
@@ -363,7 +358,8 @@ void ElectronEnergyCalibrator::computeEpCombination
  ( reco::GsfElectron & electron )
  {
 
-  float scEnergy = electron.ecalEnergy() ;
+  //float scEnergy = electron.ecalEnergy() ;
+  float scEnergy = newEnergy_ ;
   int elClass = electron.classification() ;
 
   float trackMomentum  = electron.trackMomentumAtVtx().R() ;
@@ -379,18 +375,18 @@ void ElectronEnergyCalibrator::computeEpCombination
   
   // first check for large errors
  
-  if (errorTrackMomentum_/trackMomentum > 0.5 && electron.ecalEnergyError()/scEnergy <= 0.5) {
-    finalMomentum = scEnergy;    finalMomentumError = electron.ecalEnergyError();
+  if (errorTrackMomentum_/trackMomentum > 0.5 && newEnergyError_/scEnergy <= 0.5) {
+    finalMomentum = scEnergy;    finalMomentumError = newEnergyError_;
    }
-  else if (errorTrackMomentum_/trackMomentum <= 0.5 && electron.ecalEnergyError()/scEnergy > 0.5){
+  else if (errorTrackMomentum_/trackMomentum <= 0.5 && newEnergyError_/scEnergy > 0.5){
     finalMomentum = trackMomentum;  finalMomentumError = errorTrackMomentum_;
    }
-  else if (errorTrackMomentum_/trackMomentum > 0.5 && electron.ecalEnergyError()/scEnergy > 0.5){
-    if (errorTrackMomentum_/trackMomentum < electron.ecalEnergyError()/scEnergy) {
+  else if (errorTrackMomentum_/trackMomentum > 0.5 && newEnergyError_/scEnergy > 0.5){
+    if (errorTrackMomentum_/trackMomentum < newEnergyError_/scEnergy) {
       finalMomentum = trackMomentum; finalMomentumError = errorTrackMomentum_;
      }
     else{
-      finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError();
+      finalMomentum = scEnergy; finalMomentumError = newEnergyError_;
      }
   }
   
@@ -400,13 +396,13 @@ void ElectronEnergyCalibrator::computeEpCombination
      // calculate E/p and corresponding error
     float eOverP = scEnergy / trackMomentum;
     float errorEOverP = sqrt(
-			     (electron.ecalEnergyError()/trackMomentum)*(electron.ecalEnergyError()/trackMomentum) +
+			     (newEnergyError_/trackMomentum)*(newEnergyError_/trackMomentum) +
 			     (scEnergy*errorTrackMomentum_/trackMomentum/trackMomentum)*
 			     (scEnergy*errorTrackMomentum_/trackMomentum/trackMomentum));
     
     if ( eOverP  > 1 + 2.5*errorEOverP )
       {
-	finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError();
+	finalMomentum = scEnergy; finalMomentumError = newEnergyError_;
 	if ((elClass==reco::GsfElectron::GOLDEN) && electron.isEB() && (eOverP<1.15))
 	  {
 	    if (scEnergy<15) {finalMomentum = trackMomentum ; finalMomentumError = errorTrackMomentum_;}
@@ -414,7 +410,7 @@ void ElectronEnergyCalibrator::computeEpCombination
       }
     else if ( eOverP < 1 - 2.5*errorEOverP )
       {
-	finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError();
+	finalMomentum = scEnergy; finalMomentumError = newEnergyError_;
 	if (elClass==reco::GsfElectron::SHOWERING)
 	  {
 	    if (electron.isEB())
@@ -436,9 +432,9 @@ void ElectronEnergyCalibrator::computeEpCombination
     else 
       {
 	// combination
-	finalMomentum = (scEnergy/electron.ecalEnergyError()/electron.ecalEnergyError() + trackMomentum/errorTrackMomentum_/errorTrackMomentum_) /
-	  (1/electron.ecalEnergyError()/electron.ecalEnergyError() + 1/errorTrackMomentum_/errorTrackMomentum_);
-	float finalMomentumVariance = 1 / (1/electron.ecalEnergyError()/electron.ecalEnergyError() + 1/errorTrackMomentum_/errorTrackMomentum_);
+	finalMomentum = (scEnergy/newEnergyError_/newEnergyError_ + trackMomentum/errorTrackMomentum_/errorTrackMomentum_) /
+	  (1/newEnergyError_/newEnergyError_ + 1/errorTrackMomentum_/errorTrackMomentum_);
+	float finalMomentumVariance = 1 / (1/newEnergyError_/newEnergyError_ + 1/errorTrackMomentum_/errorTrackMomentum_);
 	finalMomentumError = sqrt(finalMomentumVariance);
       }
     
@@ -451,6 +447,6 @@ void ElectronEnergyCalibrator::computeEpCombination
      oldMomentum.z()*finalMomentum/oldMomentum.t(),
      finalMomentum ) ;
   finalMomentumError_ =  finalMomentumError;  
-  if (debug_) std::cout << "[ElectronEnergCorrector] old comb momentum " << oldMomentum.t() << " new comb momentum " << newMomentum_.t() << std::endl;
+  //if (debug_) std::cout << "[ElectronEnergCorrector] old comb momentum " << oldMomentum.t() << " new comb momentum " << newMomentum_.t() << std::endl;
 
  }
