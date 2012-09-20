@@ -348,8 +348,8 @@ void ElectronEnergyCalibrator::computeNewEnergy
   // correct energy error for MC and for data as error is obtained from (ideal) MC parametrisation
   if (updateEnergyError_)
    newEnergyError_ = sqrt(newEnergyError_*newEnergyError_ + dsigMC*dsigMC*newEnergy_*newEnergy_) ;
-  if (debug_) std::cout << "[ElectronEnergyCalibrator] SC corrected energy " << electron.ecalEnergy() << " new corrected energy " << newEnergy_ << std::endl;
-  if (debug_) std::cout << "[ElectronEnergyCalibrator] SC corrected energy error " << electron.ecalEnergyError() << " recalibrated ecalEnergy error " << newEnergyError_ << std::endl;
+  if (debug_) std::cout << "[ElectronEnergyCalibrator] ecalEnergy " << electron.ecalEnergy() << " recalibrated ecalEnergy " << newEnergy_ << std::endl;
+  if (debug_) std::cout << "[ElectronEnergyCalibrator] ecalEnergy error " << electron.ecalEnergyError() << " recalibrated ecalEnergy error " << newEnergyError_ << std::endl;
 
  }
 
