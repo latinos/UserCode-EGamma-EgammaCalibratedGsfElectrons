@@ -15,7 +15,7 @@
      <Notes on implementation>
 */
 
-#if CMSSW_VERSION>500
+//#if CMSSW_VERSION>500
 
 
 #include "ZZAnalysis/AnalysisStep/plugins/CalibratedPatElectronProducer.h"
@@ -89,7 +89,7 @@ void CalibratedPatElectronProducer::produce( edm::Event & event, const edm::Even
     electrons->push_back(clone);
   }
 
-  ElectronEnergyCalibrator theEnCorrector(dataset, isAOD, isMC, updateEnergyError, debug);
+  ElectronEnergyCalibrator theEnCorrector(dataset, isAOD, isMC, updateEnergyError, applyCorrections, debug);
 
   for
    ( ele = electrons->begin() ;
@@ -114,4 +114,4 @@ void CalibratedPatElectronProducer::produce( edm::Event & event, const edm::Even
 #include "FWCore/Framework/interface/ModuleFactory.h"
 DEFINE_FWK_MODULE(CalibratedPatElectronProducer);
 
-#endif
+//#endif

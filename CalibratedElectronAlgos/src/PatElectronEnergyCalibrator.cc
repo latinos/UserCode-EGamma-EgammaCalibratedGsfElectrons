@@ -2,7 +2,7 @@
 //Updated to: http://cmssw.cvs.cern.ch/cgi-bin/cmssw.cgi/UserCode/EGamma/EgammaCalibratedGsfElectrons/CalibratedElectronAlgos/src/ElectronEnergyCalibrator.cc?revision=1.22
 //I replace here the userFloats with the variables that are now available in Electron.h?revision=1.40
 
-#if CMSSW_VERSION>500
+//#if CMSSW_VERSION>500
 
 
 #include "ZZAnalysis/AnalysisStep/interface/PatElectronEnergyCalibrator.h"
@@ -486,35 +486,35 @@ void ElectronEnergyCalibrator::computeEpCombination
 			     (scEnergy*errorTrackMomentum_/trackMomentum/trackMomentum)*
 			     (scEnergy*errorTrackMomentum_/trackMomentum/trackMomentum));
     //old comb  
-//     if ( eOverP  > 1 + 2.5*errorEOverP )
-//       {
-// 	finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError();
-// 	if ((elClass==reco::GsfElectron::GOLDEN) && electron.isEB() && (eOverP<1.15))
-// 	  {
-// 	    if (scEnergy<15) {finalMomentum = trackMomentum ; finalMomentumError = errorTrackMomentum_;}
-// 	  }
-//       }
-//     else if ( eOverP < 1 - 2.5*errorEOverP )
-//       {
-// 	finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError();
-// 	if (elClass==reco::GsfElectron::SHOWERING)
-// 	  {
-// 	    if (electron.isEB())
-// 	      {
-// 		if(scEnergy<18) {finalMomentum = trackMomentum; finalMomentumError = errorTrackMomentum_;}
-// 	      }
-// 	    else if (electron.isEE())
-// 	      {
-// 		if(scEnergy<13) {finalMomentum = trackMomentum; finalMomentumError = errorTrackMomentum_;}
-// 	      }
-// 	    else
-// 	      { edm::LogWarning("ElectronMomentumCorrector::correct")<<"nor barrel neither endcap electron ?!" ; }
-// 	  }
-// 	else if (electron.isGap())
-// 	  {
-// 	    if(scEnergy<60) {finalMomentum = trackMomentum; finalMomentumError = errorTrackMomentum_;}
-// 	  }
-//       }
+     if ( eOverP  > 1 + 2.5*errorEOverP )
+       {
+ 	finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError();
+ 	if ((elClass==reco::GsfElectron::GOLDEN) && electron.isEB() && (eOverP<1.15))
+ 	  {
+ 	    if (scEnergy<15) {finalMomentum = trackMomentum ; finalMomentumError = errorTrackMomentum_;}
+ 	  }
+       }
+     else if ( eOverP < 1 - 2.5*errorEOverP )
+       {
+ 	finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError();
+ 	if (elClass==reco::GsfElectron::SHOWERING)
+ 	  {
+ 	    if (electron.isEB())
+ 	      {
+ 		if(scEnergy<18) {finalMomentum = trackMomentum; finalMomentumError = errorTrackMomentum_;}
+ 	      }
+ 	    else if (electron.isEE())
+ 	      {
+ 		if(scEnergy<13) {finalMomentum = trackMomentum; finalMomentumError = errorTrackMomentum_;}
+ 	      }
+ 	    else
+ 	      { edm::LogWarning("ElectronMomentumCorrector::correct")<<"nor barrel neither endcap electron ?!" ; }
+ 	  }
+ 	else if (electron.isGap())
+ 	  {
+ 	    if(scEnergy<60) {finalMomentum = trackMomentum; finalMomentumError = errorTrackMomentum_;}
+ 	  }
+       }
 //     else 
 //       {
 // 	// combination
@@ -527,42 +527,42 @@ void ElectronEnergyCalibrator::computeEpCombination
     
 //new comb
 
-    bool eleIsNotInCombination = false ;
-     if ( (eOverP  > 1 + 2.5*errorEOverP) || (eOverP  < 1 - 2.5*errorEOverP) || (eOverP < 0.8) || (eOverP > 1.3) )
-      { eleIsNotInCombination = true ; }
-     if (eleIsNotInCombination)
-      {
-       if (eOverP > 1)
-        { finalMomentum = scEnergy ; finalMomentumError = electron.ecalEnergyError() ; }
-       else
-        {
-         if (elClass == reco::GsfElectron::GOLDEN)
-          { finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError(); }
-         if (elClass == reco::GsfElectron::BIGBREM)
-          {
-           if (scEnergy<36)
-            { finalMomentum = trackMomentum ; finalMomentumError = errorTrackMomentum_ ; }
-           else
-            { finalMomentum = scEnergy ; finalMomentumError = electron.ecalEnergyError() ; }
-          }
-         if (elClass == reco::GsfElectron::BADTRACK)
-          { finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError() ; }
-         if (elClass == reco::GsfElectron::SHOWERING)
-          {
-           if (scEnergy<30)
-            { finalMomentum = trackMomentum ; finalMomentumError = errorTrackMomentum_; }
-           else
-            { finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError();}
-          }
-         if (elClass == reco::GsfElectron::GAP)
-          {
-           if (scEnergy<60)
-            { finalMomentum = trackMomentum ; finalMomentumError = errorTrackMomentum_ ; }
-           else
-            { finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError() ; }
-          }
-        }
-      }
+//    bool eleIsNotInCombination = false ;
+//     if ( (eOverP  > 1 + 2.5*errorEOverP) || (eOverP  < 1 - 2.5*errorEOverP) || (eOverP < 0.8) || (eOverP > 1.3) )
+//      { eleIsNotInCombination = true ; }
+//     if (eleIsNotInCombination)
+//      {
+//       if (eOverP > 1)
+//        { finalMomentum = scEnergy ; finalMomentumError = electron.ecalEnergyError() ; }
+//       else
+//        {
+//         if (elClass == reco::GsfElectron::GOLDEN)
+//          { finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError(); }
+//         if (elClass == reco::GsfElectron::BIGBREM)
+//          {
+//           if (scEnergy<36)
+//            { finalMomentum = trackMomentum ; finalMomentumError = errorTrackMomentum_ ; }
+//           else
+//            { finalMomentum = scEnergy ; finalMomentumError = electron.ecalEnergyError() ; }
+//          }
+//         if (elClass == reco::GsfElectron::BADTRACK)
+//          { finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError() ; }
+//         if (elClass == reco::GsfElectron::SHOWERING)
+//          {
+//           if (scEnergy<30)
+//            { finalMomentum = trackMomentum ; finalMomentumError = errorTrackMomentum_; }
+//           else
+//            { finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError();}
+//          }
+//         if (elClass == reco::GsfElectron::GAP)
+//          {
+//           if (scEnergy<60)
+//            { finalMomentum = trackMomentum ; finalMomentumError = errorTrackMomentum_ ; }
+//           else
+//            { finalMomentum = scEnergy; finalMomentumError = electron.ecalEnergyError() ; }
+//          }
+//        }
+//      }
  
      else
       {
@@ -590,4 +590,4 @@ void ElectronEnergyCalibrator::computeEpCombination
  }
 
  
-#endif
+//#endif
