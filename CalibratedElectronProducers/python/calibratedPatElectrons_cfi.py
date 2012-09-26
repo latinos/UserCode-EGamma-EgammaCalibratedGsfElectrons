@@ -9,7 +9,7 @@ import FWCore.ParameterSet.Config as cms
 calibratedPatElectrons = cms.EDProducer("CalibratedPatElectronProducer",
 
     # input collections
-    inputGsfElectronsTag = cms.InputTag("gsfElectrons"),
+    inputPatElectronsTag = cms.InputTag("patElectronsWithTrigger"),
 
     # data or MC corrections
     # if isMC is false, data corrections are applied
