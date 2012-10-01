@@ -88,7 +88,7 @@ void ElectronEnergyCalibrator::computeNewEnergy
   //double scEnergy = electron.superCluster()->energy() ;
   double scEnergy = electron.ecalEnergy() ;
   float corr=0.;
-  float dsigMC=0., corrMC=0.;
+  float dsigMC=0., corrMC=0., scale = 1.;
   newEnergyError_ = electron.ecalEnergyError() ;
 
   // Compute correction depending on run, categories and dataset
@@ -438,7 +438,9 @@ void ElectronEnergyCalibrator::computeNewEnergy
   
   // now correct the energy
   // correction for data
-  if (!isMC_) newEnergy_ = scEnergy/(1+corr);
+  if (!isMC_) {
+	  if (dataset_=="ICHEP2012") { newEnergy_ = scEnergy*scale;} else newEnergy_ = scEnergy/(1+corr);
+  }
   // smearing for MC
   if (isMC_) {
     CLHEP::RandGaussQ gaussDistribution(rng->getEngine(), 1.,dsigMC);
