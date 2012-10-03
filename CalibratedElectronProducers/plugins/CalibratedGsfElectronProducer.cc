@@ -52,9 +52,9 @@ CalibratedGsfElectronProducer::CalibratedGsfElectronProducer( const edm::Paramet
   debug = cfg.getParameter<bool>("debug");
   
   //basic checks
-  if (isMC&&(dataset!="Summer11"&&dataset!="Fall11"&&dataset!="Summer12"))
+  if (isMC&&(dataset!="Summer11"&&dataset!="Fall11"&&dataset!="Summer12"&&dataset!="Summer12_DR53X"))
    { throw cms::Exception("CalibratedgsfElectronProducer|ConfigError")<<"Unknown MC dataset" ; }
-  if (!isMC&&(dataset!="Prompt"&&dataset!="ReReco"&&dataset!="Jan16ReReco"&&dataset!="ICHEP2012"))
+  if (!isMC&&(dataset!="Prompt"&&dataset!="ReReco"&&dataset!="Jan16ReReco"&&dataset!="ICHEP2012"&&dataset!="2012Jul13ReReco"))
    { throw cms::Exception("CalibratedgsfElectronProducer|ConfigError")<<"Unknown Data dataset" ; }
    cout << "[CalibratedGsfElectronProducer] Correcting scale for dataset " << dataset << endl;
  }
